@@ -142,3 +142,23 @@ public class OAuth1AuthorizationHeaderBuilder {
 		return this;
 	}
 }
+
+/* How to use it
+ * header "Authorization" = getAuthHeader()
+
+	private String getAuthHeader() {
+		try {
+			return new OAuth1AuthorizationHeaderBuilder()
+				.withMethod(METHOD_POST)
+				.withURL(getFinalUrl())
+				.withConsumerSecret(consumerSecret)
+				.withTokenSecret(tokenSecret)
+				.withParameter(OAUTH_CONSUMER_KEY, consumerKey)
+				.withParameter(OAUTH_TOKEN, accessToken)
+				.build();
+		} catch (Exception e) {
+			LOGGER.warn("ERROR creating OAuth1 headers");
+			return "";
+		}
+	}
+ */
