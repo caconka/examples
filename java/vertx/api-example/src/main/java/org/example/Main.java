@@ -16,6 +16,7 @@ import io.vertx.rxjava3.config.ConfigRetriever;
 import io.vertx.rxjava3.core.AbstractVerticle;
 import io.vertx.rxjava3.core.Vertx;
 import java.util.List;
+import org.example.config.Config;
 import org.example.entity.logger.Log;
 import org.example.verticle.MainVerticle;
 

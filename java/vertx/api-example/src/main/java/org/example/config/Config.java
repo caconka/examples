@@ -1,4 +1,4 @@
-package org.example;
+package org.example.config;
 
 import io.vertx.core.impl.logging.Logger;
 import io.vertx.core.impl.logging.LoggerFactory;

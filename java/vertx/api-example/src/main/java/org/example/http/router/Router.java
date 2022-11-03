@@ -1,4 +1,4 @@
-package org.example.http;
+package org.example.http.router;
 
 import io.reactivex.rxjava3.core.Single;
 import io.vertx.core.impl.logging.Logger;

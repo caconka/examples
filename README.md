@@ -1,4 +1,4 @@
-# Code examples
+# Examples
 
 - [Architecture](./architecture/)
 - [Java](./java/)

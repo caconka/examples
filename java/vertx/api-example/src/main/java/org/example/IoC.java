@@ -2,7 +2,8 @@ package org.example;
 
 import static java.util.Objects.isNull;
 
-import org.example.http.Router;
+import org.example.config.Config;
+import org.example.http.router.Router;
 import org.example.http.handler.FailureHandler;
 import org.example.http.handler.HealthCheckHandler;
 import org.example.http.handler.UserHandler;
