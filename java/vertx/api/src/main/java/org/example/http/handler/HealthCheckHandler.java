@@ -14,7 +14,7 @@ public class HealthCheckHandler implements Handler<RoutingContext> {
 		routingCtx.response()
 			.setStatusCode(HttpResponseStatus.OK.code())
 			.putHeader(HttpHeaders.CONTENT_TYPE, HttpHeaderValues.APPLICATION_JSON)
-			.end(new JsonObject().put("status", "OK").encodePrettily());
+			.end(new JsonObject().put("status", "OK").encode());
 	}
 
 }

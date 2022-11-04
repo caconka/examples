@@ -13,7 +13,6 @@ public class Config {
 	private static final Byte LOCK = (byte) 0;
 	private static Config instance;
 
-	public static final String DEFAULT_HOST = "0.0.0.0";
 	public static final int DEFAULT_PORT = 8080;
 
 	private JsonObject config;

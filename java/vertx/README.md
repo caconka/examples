@@ -1,3 +1,4 @@
 # Java vertx examples
 
-- [API example](./api-example/)
+- [API](./api/)
+- [Kafka consumer](./kafka/consumer/)
