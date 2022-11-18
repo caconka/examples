@@ -6,7 +6,7 @@ import io.vertx.core.impl.logging.LoggerFactory;
 import io.vertx.rxjava3.core.AbstractVerticle;
 import java.util.Arrays;
 import org.example.IoC;
-import org.example.entity.logger.Log;
+import org.example.domain.logger.Log;
 
 public class MainVerticle extends AbstractVerticle {
 

@@ -1,7 +1,7 @@
 package org.example.http.adapter;
 
 import io.vertx.rxjava3.ext.web.RoutingContext;
-import org.example.entity.logger.LogContext;
+import org.example.domain.logger.LogContext;
 
 public class LogContextAdapter {
 

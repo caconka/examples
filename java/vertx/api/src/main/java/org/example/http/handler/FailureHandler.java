@@ -9,11 +9,11 @@ import io.vertx.core.json.Json;
 import io.vertx.rxjava3.ext.web.RoutingContext;
 import java.util.Arrays;
 import java.util.Map;
-import org.example.entity.exception.BackendException;
-import org.example.entity.exception.BadRequestException;
-import org.example.entity.exception.Error;
-import org.example.entity.exception.InternalServerErrorException;
-import org.example.entity.logger.Log;
+import org.example.domain.exception.BackendException;
+import org.example.domain.exception.BadRequestException;
+import org.example.domain.exception.Error;
+import org.example.domain.exception.InternalServerErrorException;
+import org.example.domain.logger.Log;
 
 public class FailureHandler {
 

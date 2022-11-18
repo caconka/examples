@@ -6,7 +6,7 @@ import io.vertx.core.impl.logging.LoggerFactory;
 import io.vertx.rxjava3.core.Vertx;
 import io.vertx.rxjava3.ext.web.handler.BodyHandler;
 import io.vertx.rxjava3.ext.web.openapi.RouterBuilder;
-import org.example.entity.logger.Log;
+import org.example.domain.logger.Log;
 import org.example.http.handler.FailureHandler;
 import org.example.http.handler.HealthCheckHandler;
 import org.example.http.handler.LoggerContextHandler;

@@ -10,8 +10,8 @@ import io.vertx.core.impl.logging.LoggerFactory;
 import io.vertx.core.json.Json;
 import io.vertx.rxjava3.ext.web.RoutingContext;
 import java.util.Random;
-import org.example.entity.logger.Log;
-import org.example.entity.logger.LogContext;
+import org.example.domain.logger.Log;
+import org.example.domain.logger.LogContext;
 import org.example.http.model.User;
 
 public class UserHandler {

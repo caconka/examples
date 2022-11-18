@@ -4,8 +4,8 @@ import io.vertx.core.impl.logging.Logger;
 import io.vertx.core.impl.logging.LoggerFactory;
 import io.vertx.core.json.JsonObject;
 import java.util.Optional;
-import org.example.entity.exception.InvalidConfigException;
-import org.example.entity.logger.Log;
+import org.example.domain.exception.InvalidConfigException;
+import org.example.domain.logger.Log;
 
 public class Config {
 
