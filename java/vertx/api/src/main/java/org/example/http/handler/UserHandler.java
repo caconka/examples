@@ -5,14 +5,15 @@ import static org.example.http.handler.LoggerContextHandler.LOG_CONTEXT;
 import io.netty.handler.codec.http.HttpHeaderValues;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import io.vertx.core.http.HttpHeaders;
-import io.vertx.core.impl.logging.Logger;
-import io.vertx.core.impl.logging.LoggerFactory;
 import io.vertx.core.json.Json;
 import io.vertx.rxjava3.ext.web.RoutingContext;
 import java.util.Random;
 import org.example.domain.logger.Log;
 import org.example.domain.logger.LogContext;
+import org.example.domain.logger.OperationType;
 import org.example.http.model.User;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class UserHandler {
 
@@ -22,7 +23,10 @@ public class UserHandler {
 
 	public void createUser(RoutingContext routingCtx) {
 		LogContext logCtx = routingCtx.get(LOG_CONTEXT);
-		LOGGER.info(Log.builder().setMessage("CreateUser handler").setContext(logCtx).build().toJson());
+		LOGGER.info(Log.builder()
+			.setOperation(OperationType.INPUT)
+			.setContext(logCtx)
+			.setMessage("CreateUser handler").build().toJson());
 
 		var user = User.builder()
 			.setId(RANDOM.nextInt(10000) + "")
@@ -41,7 +45,10 @@ public class UserHandler {
 
 	public void findUserById(RoutingContext routingCtx) {
 		LogContext logCtx = routingCtx.get(LOG_CONTEXT);
-		LOGGER.info(Log.builder().setMessage("FindUserById handler").setContext(logCtx).build().toJson());
+		LOGGER.info(Log.builder()
+			.setOperation(OperationType.INPUT)
+			.setContext(logCtx)
+			.setMessage("FindUserById handler").build().toJson());
 
 		var user = User.builder()
 			.setId(routingCtx.pathParam("id"))
@@ -60,7 +67,10 @@ public class UserHandler {
 
 	public void deleteUser(RoutingContext routingCtx) {
 		LogContext logCtx = routingCtx.get(LOG_CONTEXT);
-		LOGGER.info(Log.builder().setMessage("DeleteUser handler").setContext(logCtx).build().toJson());
+		LOGGER.info(Log.builder()
+			.setOperation(OperationType.INPUT)
+			.setContext(logCtx)
+			.setMessage("DeleteUser handler").build().toJson());
 
 		routingCtx.response()
 			.setStatusCode(HttpResponseStatus.NO_CONTENT.code())

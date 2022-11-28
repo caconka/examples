@@ -3,8 +3,6 @@ package org.example.http.handler;
 import io.netty.handler.codec.http.HttpHeaderValues;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import io.vertx.core.http.HttpHeaders;
-import io.vertx.core.impl.logging.Logger;
-import io.vertx.core.impl.logging.LoggerFactory;
 import io.vertx.core.json.Json;
 import io.vertx.rxjava3.ext.web.RoutingContext;
 import java.util.Arrays;
@@ -14,6 +12,9 @@ import org.example.domain.exception.BadRequestException;
 import org.example.domain.exception.Error;
 import org.example.domain.exception.InternalServerErrorException;
 import org.example.domain.logger.Log;
+import org.example.domain.logger.OperationType;
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
 
 public class FailureHandler {
 
@@ -21,19 +22,9 @@ public class FailureHandler {
 
 	public void handle(RoutingContext routingCtx) {
 		var err = routingCtx.failure();
-
-		LOGGER.error(
-			Log.builder()
-				.setMessage("Error handling")
-				.addMetadata("errorMsg", err.getMessage())
-				.addMetadata("detailMsg", err.getLocalizedMessage())
-				.addMetadata("cause", err.getCause() + "")
-				.addMetadata("stackTrace", Arrays.toString(err.getStackTrace()))
-				.build().toJson());
-
 		var body = err.getMessage();
 
-		if (routingCtx.failure() instanceof BackendException exception) {
+		if (err instanceof BackendException exception) {
 			body = toResponseBody(exception.getError());
 			routingCtx.response().setStatusCode(exception.getHttpCode());
 
@@ -50,20 +41,29 @@ public class FailureHandler {
 			routingCtx.response().setStatusCode(routingCtx.statusCode());
 		}
 
+		var responseBody = body;
+		var logMetadata = Map.of(
+			"errorMsg", err.getMessage(),
+			"detailMsg", err.getLocalizedMessage(),
+			"cause", err.getCause() + "",
+			"stackTrace", Arrays.toString(err.getStackTrace()));
+
 		routingCtx.response()
 			.putHeader(HttpHeaders.CONTENT_TYPE, HttpHeaderValues.APPLICATION_JSON)
 			.endHandler(event -> LOGGER.info(Log.builder()
 				.setContext(routingCtx.get(LoggerContextHandler.LOG_CONTEXT))
-				.addMetadata("operation", "response")
-				.build().toJson()))
-			.end(body);
+				.setOperation(OperationType.OUTPUT)
+				.setMetadata(logMetadata)
+				.setMessage("Error handling")
+				.setResponseBody(responseBody).build().toJson()))
+			.end(responseBody);
 	}
 
 	private static String toResponseBody(Error error) {
 		var errors = new Error[] {error};
 		var errorsMap = Map.of("errors", errors);
 
-		return Json.encodePrettily(errorsMap);
+		return Json.encode(errorsMap);
 	}
 
 }

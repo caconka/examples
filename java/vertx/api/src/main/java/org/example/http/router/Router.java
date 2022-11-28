@@ -1,8 +1,6 @@
 package org.example.http.router;
 
 import io.reactivex.rxjava3.core.Single;
-import io.vertx.core.impl.logging.Logger;
-import io.vertx.core.impl.logging.LoggerFactory;
 import io.vertx.rxjava3.core.Vertx;
 import io.vertx.rxjava3.ext.web.handler.BodyHandler;
 import io.vertx.rxjava3.ext.web.openapi.RouterBuilder;
@@ -11,6 +9,8 @@ import org.example.http.handler.FailureHandler;
 import org.example.http.handler.HealthCheckHandler;
 import org.example.http.handler.LoggerContextHandler;
 import org.example.http.handler.UserHandler;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class Router {
 

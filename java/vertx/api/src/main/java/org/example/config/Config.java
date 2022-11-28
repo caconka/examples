@@ -1,16 +1,16 @@
 package org.example.config;
 
-import io.vertx.core.impl.logging.Logger;
-import io.vertx.core.impl.logging.LoggerFactory;
 import io.vertx.core.json.JsonObject;
 import java.util.Optional;
 import org.example.domain.exception.InvalidConfigException;
 import org.example.domain.logger.Log;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class Config {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(Config.class);
-	private static final Byte LOCK = (byte) 0;
+	private static final Object LOCK = new Object();
 	private static Config instance;
 
 	public static final int DEFAULT_PORT = 8080;
@@ -49,9 +49,7 @@ public class Config {
 
 		if (conf == null) {
 			LOGGER.info(
-				Log.builder()
-					.setMessage("Config not found : " + pattern + " defaultValue: " + defaultValue)
-					.build().toJson());
+				Log.builder().setMessage("Config not found : " + pattern + " defaultValue: " + defaultValue).build().toJson());
 
 			return defaultValue;
 		}

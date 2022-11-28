@@ -13,6 +13,10 @@ public class Log {
 	private final String time;
 	private final String message;
 	private final Map<String, String> metadata;
+
+	@JsonInclude(Include.NON_NULL)
+	private final String operation;
+
 	@JsonInclude(Include.NON_NULL)
 	private final String traceId;
 
@@ -21,6 +25,7 @@ public class Log {
 		message = builder.message;
 		metadata = builder.metadata;
 		traceId = builder.traceId;
+		operation = builder.operation;
 	}
 
 	public static Builder builder() {
@@ -39,6 +44,10 @@ public class Log {
 		return message;
 	}
 
+	public String getOperation() {
+		return operation;
+	}
+
 	public Map<String, String> getMetadata() {
 		return metadata;
 	}
@@ -54,6 +63,7 @@ public class Log {
 		private String time;
 		private String message;
 		private String traceId;
+		private String operation;
 
 		public Log build() {
 			var dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
@@ -76,8 +86,28 @@ public class Log {
 			return this;
 		}
 
+		public Builder setOperation(OperationType operation) {
+			this.operation = operation.getName();
+			return this;
+		}
+
 		public Builder addMetadata(String key, String value) {
-			this.metadata.put(key, value);
+			metadata.put(key, value);
+			return this;
+		}
+
+		public Builder setMetadata(Map<String, String> metadata) {
+			metadata.forEach(this::addMetadata);
+			return this;
+		}
+
+		public Builder setRequestBody(Object requestBody) {
+			metadata.put("requestBody", Json.encode(requestBody));
+			return this;
+		}
+
+		public Builder setResponseBody(Object responseBody) {
+			metadata.put("responseBody", Json.encode(responseBody));
 			return this;
 		}
 	}
