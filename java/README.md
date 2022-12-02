@@ -1,3 +1,3 @@
 # Java examples
 
-- [vertx](./vertx/)
+- [vertx](./vertx)

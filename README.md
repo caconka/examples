@@ -1,4 +1,5 @@
 # Examples
 
-- [Architecture](./architecture/)
-- [Java](./java/)
+- [Architecture](./architecture)
+- [Java](./java)
+- [Wiremock](./wiremock)
