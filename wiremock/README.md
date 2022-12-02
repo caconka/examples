@@ -5,7 +5,7 @@
 Run docker-compose:
 
 ```bash
-docker-compose -f docker-compose.yaml up -d
+docker-compose -f docker/docker-compose.yaml up -d
 ```
 
 Send a request:
