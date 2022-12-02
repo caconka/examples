@@ -2,6 +2,7 @@ package org.example.http.handler;
 
 import io.netty.handler.codec.http.HttpHeaderValues;
 import io.netty.handler.codec.http.HttpResponseStatus;
+import io.vertx.core.Handler;
 import io.vertx.core.http.HttpHeaders;
 import io.vertx.core.json.Json;
 import io.vertx.rxjava3.ext.web.RoutingContext;
@@ -16,10 +17,11 @@ import org.example.domain.logger.OperationType;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
 
-public class FailureHandler {
+public class FailureHandler implements Handler<RoutingContext> {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(FailureHandler.class);
 
+	@Override
 	public void handle(RoutingContext routingCtx) {
 		var err = routingCtx.failure();
 		var body = err.getMessage();

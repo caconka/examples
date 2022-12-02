@@ -50,7 +50,7 @@ public class Router {
 				var router = routerBuilder.createRouter();
 				router.get(HEALTH_CHECK).handler(healthCheckHandler);
 
-				router.route().failureHandler(failureHandler::handle);
+				router.route().failureHandler(failureHandler);
 
 				return router;
 			})
