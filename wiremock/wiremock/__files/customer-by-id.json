@@ -1,0 +1,6 @@
+{
+  "id": "{{request.pathSegments.[1]}}",
+  "name": "Margarita",
+  "last_name": "Salas",
+  "email": "margaritasalas@test.com"
+}

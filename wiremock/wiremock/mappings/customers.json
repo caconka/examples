@@ -1,0 +1,38 @@
+{
+  "mappings": [
+    {
+      "request" : {
+        "urlPathPattern": "/customers/([a-z0-9]+)",
+        "method" : "GET"
+      },
+      "response" : {
+        "status" : 200,
+        "bodyFileName": "customer-by-id.json",
+        "transformers" : [ "response-template" ]
+      }
+    },
+    {
+      "request": {
+        "urlPathPattern": "/customers",
+        "method": "POST",
+        "bodyPatterns": [
+          {
+            "equalToJson": {
+              "name": "${json-unit.any-string}",
+              "last_name": "${json-unit.any-string}",
+              "email": "${json-unit.any-string}"
+            }
+          }
+        ]
+      },
+      "response": {
+        "status": 201,
+        "bodyFileName": "customer-created.json",
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "transformers": ["response-template"]
+      }
+    }
+  ]
+}

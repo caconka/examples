@@ -1,0 +1,11 @@
+version: '3'
+
+services:
+  wiremock:
+    image: wiremock/wiremock
+    container_name: wiremock
+    ports:
+      - '9999:8080'
+    volumes:
+      - ./wiremock:/home/wiremock:Z
+    command: ["--verbose", "--global-response-templating"]

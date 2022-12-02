@@ -1,0 +1,6 @@
+{
+  "id": "1234",
+  "name": "{{jsonPath request.body '$.name'}}",
+  "last_name": "{{jsonPath request.body '$.last_name'}}",
+  "email": "{{jsonPath request.body '$.email'}}"
+}
