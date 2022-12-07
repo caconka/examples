@@ -1,15 +1,51 @@
 {
   "mappings": [
     {
-      "request" : {
+      "request": {
         "urlPathPattern": "/customers/([a-z0-9]+)",
-        "method" : "GET"
+        "method": "GET"
       },
-      "response" : {
-        "status" : 200,
+      "response": {
+        "status": 200,
         "bodyFileName": "customer-by-id.json",
-        "transformers" : [ "response-template" ]
+        "transformers": [
+          "response-template"
+        ]
       }
+    },
+    {
+			"name": "Get customer by id with customers-retry scenario first-state",
+      "request": {
+        "url": "/customers/1234",
+        "method": "GET"
+      },
+      "response": {
+        "status": 500,
+        "bodyFileName": "error-internal-server-error.json",
+        "transformers": [
+          "response-template"
+        ]
+      },
+      "scenarioName": "customers-retry",
+      "requiredScenarioState": "Started",
+      "newScenarioState": "Retry"
+    },
+    {
+			"name": "Get customer by id with customers-retry scenario second-state",
+      "request": {
+        "url": "/customers/1234",
+        "method": "GET"
+      },
+      "response": {
+        "status": 200,
+        "bodyFileName": "customer-by-id.json",
+        "transformers": [
+          "response-template"
+        ]
+      },
+      "scenarioName": "customers-retry",
+      "requiredScenarioState": "Retry",
+      "newScenarioState": "Started"
     },
     {
       "request": {
@@ -31,7 +67,9 @@
         "headers": {
           "Content-Type": "application/json"
         },
-        "transformers": ["response-template"]
+        "transformers": [
+          "response-template"
+        ]
       }
     }
   ]

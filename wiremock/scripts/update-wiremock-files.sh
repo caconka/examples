@@ -8,5 +8,5 @@ docker cp ./wiremock/mappings/. wiremock:/home/wiremock/mappings
 docker cp ./wiremock/__files/. wiremock:/home/wiremock/__files
 echo "Files copied successfully!"
 
-docker-compose restart
+docker restart wiremock
 echo "Restart completed!"

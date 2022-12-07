@@ -7,5 +7,5 @@ services:
     ports:
       - '9999:8080'
     volumes:
-      - ./wiremock:/home/wiremock:Z
+      - ../wiremock:/home/wiremock:Z
     command: ["--verbose", "--global-response-templating"]
