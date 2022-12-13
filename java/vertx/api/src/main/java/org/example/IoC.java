@@ -3,10 +3,11 @@ package org.example;
 import static java.util.Objects.isNull;
 
 import org.example.config.Config;
-import org.example.http.router.Router;
-import org.example.http.handler.FailureHandler;
-import org.example.http.handler.HealthCheckHandler;
-import org.example.http.handler.UserHandler;
+import org.example.controller.Router;
+import org.example.controller.handler.FailureHandler;
+import org.example.controller.handler.HealthCheckHandler;
+import org.example.controller.user.UserController;
+import org.example.controller.user.UserRouter;
 
 public class IoC {
 
@@ -17,7 +18,9 @@ public class IoC {
 
 	private IoC() {
 		config = Config.getInstance();
-		router = new Router(new HealthCheckHandler(), new FailureHandler(), new UserHandler());
+
+		var userRouter = new UserRouter(new UserController());
+		router = new Router(new HealthCheckHandler(), new FailureHandler(), userRouter);
 	}
 
 	public static synchronized IoC getInstance() {

@@ -1,4 +1,4 @@
-package org.example.kafka.handler;
+package org.example.controller;
 
 import static org.example.prometheus.Prometheus.CONSUMED;
 
@@ -9,13 +9,13 @@ import io.vertx.rxjava3.kafka.client.consumer.KafkaConsumerRecord;
 import org.example.entity.logger.Log;
 import org.example.prometheus.Prometheus;
 
-public class UserUpdatedHandler {
+public class UserUpdatedController {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(UserUpdatedHandler.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(UserUpdatedController.class);
 
 	private final Prometheus prometheus;
 
-	public UserUpdatedHandler(Prometheus prometheus) {
+	public UserUpdatedController(Prometheus prometheus) {
 		this.prometheus = prometheus;
 	}
 

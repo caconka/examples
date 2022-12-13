@@ -7,8 +7,8 @@ import io.vertx.rxjava3.core.Vertx;
 import io.vertx.rxjava3.kafka.client.consumer.KafkaConsumer;
 import java.util.HashMap;
 import org.example.config.Config;
-import org.example.http.handler.HealthCheckHandler;
-import org.example.kafka.handler.UserUpdatedHandler;
+import org.example.controller.handler.HealthCheckHandler;
+import org.example.controller.UserUpdatedController;
 import org.example.prometheus.Prometheus;
 
 public class IoC {
@@ -17,13 +17,13 @@ public class IoC {
 
 	public final Config config;
 	public final HealthCheckHandler healthCheckHandler;
-	public final UserUpdatedHandler userUpdatedHandler;
+	public final UserUpdatedController userUpdatedController;
 	public final KafkaConsumer<String, JsonObject> kafkaConsumer;
 
 	private IoC() {
 		config = Config.getInstance();
 		healthCheckHandler = new HealthCheckHandler();
-		userUpdatedHandler = new UserUpdatedHandler(new Prometheus());
+		userUpdatedController = new UserUpdatedController(new Prometheus());
 		kafkaConsumer = createKafkaConsumer();
 	}
 

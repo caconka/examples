@@ -1,6 +1,6 @@
-package org.example.http.handler;
+package org.example.controller.user;
 
-import static org.example.http.handler.LoggerContextHandler.LOG_CONTEXT;
+import static org.example.controller.handler.LoggerContextHandler.LOG_CONTEXT;
 
 import io.netty.handler.codec.http.HttpHeaderValues;
 import io.netty.handler.codec.http.HttpResponseStatus;
@@ -11,13 +11,13 @@ import java.util.Random;
 import org.example.domain.logger.Log;
 import org.example.domain.logger.LogContext;
 import org.example.domain.logger.OperationType;
-import org.example.http.model.User;
+import org.example.controller.user.model.UserDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class UserHandler {
+public class UserController {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(UserHandler.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(UserController.class);
 
 	private static final Random RANDOM = new Random();
 
@@ -28,7 +28,7 @@ public class UserHandler {
 			.setContext(logCtx)
 			.setMessage("CreateUser handler").build().toJson());
 
-		var user = User.builder()
+		var user = UserDTO.builder()
 			.setId(RANDOM.nextInt(10000) + "")
 			.setUsername("johnJames")
 			.setFirstName("John")
@@ -50,7 +50,7 @@ public class UserHandler {
 			.setContext(logCtx)
 			.setMessage("FindUserById handler").build().toJson());
 
-		var user = User.builder()
+		var user = UserDTO.builder()
 			.setId(routingCtx.pathParam("id"))
 			.setUsername("johnJames")
 			.setFirstName("John")

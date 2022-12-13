@@ -16,7 +16,7 @@ public class KafkaConsumerVerticle extends AbstractVerticle {
 		var ioc = IoC.getInstance();
 
 		return ioc.kafkaConsumer
-			.handler(ioc.userUpdatedHandler::consume)
+			.handler(ioc.userUpdatedController::consume)
 			.subscribe(ioc.config.getKafkaUserUpdatedTopic())
 			.doOnError(err -> {
 				err.printStackTrace();

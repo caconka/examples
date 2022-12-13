@@ -1,6 +1,6 @@
-package org.example.http.model;
+package org.example.controller.user.model;
 
-public class User {
+public class UserDTO {
 
 	private final String id;
 	private final String username;
@@ -9,7 +9,7 @@ public class User {
 	private final String email;
 	private final String phone;
 
-	private User(Builder builder) {
+	private UserDTO(Builder builder) {
 		id = builder.id;
 		username = builder.username;
 		firstName = builder.firstName;
@@ -55,8 +55,8 @@ public class User {
 		private String email;
 		private String phone;
 
-		public User build() {
-			return new User(this);
+		public UserDTO build() {
+			return new UserDTO(this);
 		}
 
 		public Builder setId(String id) {

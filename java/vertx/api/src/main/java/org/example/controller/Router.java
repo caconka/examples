@@ -1,14 +1,14 @@
-package org.example.http.router;
+package org.example.controller;
 
 import io.reactivex.rxjava3.core.Single;
 import io.vertx.rxjava3.core.Vertx;
 import io.vertx.rxjava3.ext.web.handler.BodyHandler;
 import io.vertx.rxjava3.ext.web.openapi.RouterBuilder;
+import org.example.controller.handler.FailureHandler;
+import org.example.controller.handler.HealthCheckHandler;
+import org.example.controller.handler.LoggerContextHandler;
+import org.example.controller.user.UserRouter;
 import org.example.domain.logger.Log;
-import org.example.http.handler.FailureHandler;
-import org.example.http.handler.HealthCheckHandler;
-import org.example.http.handler.LoggerContextHandler;
-import org.example.http.handler.UserHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -20,36 +20,28 @@ public class Router {
 
 	private final HealthCheckHandler healthCheckHandler;
 	private final FailureHandler failureHandler;
-	private final UserHandler userHandler;
+	private final UserRouter userRouter;
 
-	public Router(HealthCheckHandler healthCheckHandler, FailureHandler failureHandler,
-		UserHandler userHandler) {
-
+	public Router(HealthCheckHandler healthCheckHandler, FailureHandler failureHandler, UserRouter userRouter) {
 		this.healthCheckHandler = healthCheckHandler;
 		this.failureHandler = failureHandler;
-		this.userHandler = userHandler;
+		this.userRouter = userRouter;
 	}
 
 	public Single<io.vertx.rxjava3.ext.web.Router> configure() {
 
 		return RouterBuilder.create(Vertx.currentContext().owner(), "openapi.yaml")
 			.map(routerBuilder -> {
-
 				routerBuilder.rootHandler(BodyHandler.create());
 				routerBuilder.rootHandler(LoggerContextHandler.create());
 
-				routerBuilder.operation("createUser")
-					.handler(userHandler::createUser);
-
-				routerBuilder.operation("getUserById")
-					.handler(userHandler::findUserById);
-
-				routerBuilder.operation("deleteUser")
-					.handler(userHandler::deleteUser);
-
+				return routerBuilder;
+			})
+			.map(userRouter::configure)
+			.map(routerBuilder -> {
 				var router = routerBuilder.createRouter();
-				router.get(HEALTH_CHECK).handler(healthCheckHandler);
 
+				router.get(HEALTH_CHECK).handler(healthCheckHandler);
 				router.route().failureHandler(failureHandler);
 
 				return router;

@@ -1,4 +1,4 @@
-package org.example.http.adapter;
+package org.example.controller.adapter;
 
 import io.vertx.rxjava3.ext.web.RoutingContext;
 import org.example.domain.logger.LogContext;

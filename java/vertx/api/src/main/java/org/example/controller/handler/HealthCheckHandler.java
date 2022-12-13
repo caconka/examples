@@ -1,4 +1,4 @@
-package org.example.http.handler;
+package org.example.controller.handler;
 
 import io.netty.handler.codec.http.HttpHeaderValues;
 import io.netty.handler.codec.http.HttpResponseStatus;

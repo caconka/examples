@@ -1,8 +1,8 @@
-package org.example.http.handler;
+package org.example.controller.handler;
 
 import io.vertx.core.Handler;
 import io.vertx.rxjava3.ext.web.RoutingContext;
-import org.example.http.adapter.LogContextAdapter;
+import org.example.controller.adapter.LogContextAdapter;
 
 public class LoggerContextHandler implements Handler<RoutingContext> {
 
