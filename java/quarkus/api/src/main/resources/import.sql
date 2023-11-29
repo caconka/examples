@@ -4,6 +4,9 @@ INSERT INTO fruit (id, name, color, season) VALUES (3, 'Banana', 'Yellow', 'Spri
 INSERT INTO fruit (id, name, color, season) VALUES (4, 'Grape', 'Green', 'Summer');
 INSERT INTO fruit (id, name, color, season) VALUES (5, 'Watermelon', 'Green', 'Summer');
 INSERT INTO fruit (id, name, color, season) VALUES (6, 'Mango', 'Orange', 'Summer');
-INSERT INTO fruit (id, name, color, season) VALUES (7, 'Avocado', 'Green', 'Spring');
 
 SELECT setval('fruit_seq', (SELECT MAX(id) FROM fruit));
+
+INSERT INTO book (id, title, author, publication_date) VALUES (1, 'The Hobbit', 'J.R.R. Tolkien', TIMESTAMP'1937-09-21');
+
+SELECT setval('book_seq', (SELECT MAX(id) FROM book));

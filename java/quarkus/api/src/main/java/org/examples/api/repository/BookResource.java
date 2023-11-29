@@ -1,9 +1,10 @@
-package org.examples.fruits;
+package org.examples.api.repository;
 
 import io.quarkus.hibernate.reactive.panache.common.WithTransaction;
 import io.quarkus.panache.common.Sort;
 import io.smallrye.mutiny.Uni;
 import io.vertx.core.json.JsonObject;
+import jakarta.inject.Inject;
 import jakarta.ws.rs.BadRequestException;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.GET;
@@ -14,49 +15,51 @@ import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 import java.net.URI;
-
 import org.jboss.resteasy.reactive.RestResponse;
 
-@Path("/fruits")
+@Path("/books")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
-public class FruitResource {
+public class BookResource {
+
+	@Inject
+	private BookRepository repo;
 
 	@GET
 	public Uni<RestResponse<JsonObject>> getAll() {
-		return Fruit.listAll(Sort.by("name")).map(fruits -> RestResponse.ok(new JsonObject().put("data", fruits)));
+		return repo.listAll(Sort.by("title")).map(books -> RestResponse.ok(new JsonObject().put("data", books)));
 	}
 
 	@POST
 	@WithTransaction
-	public Uni<RestResponse<URI>> create(Fruit fruit) {
-		return fruit.persistAndFlush()
-			.map(res -> RestResponse.created(URI.create("/fruits/" + fruit.id)));
+	public Uni<RestResponse<URI>> create(Book book) {
+		return repo.persistAndFlush(book)
+			.map(res -> RestResponse.created(URI.create("/books/" + book.getId())));
 			// .onFailure().transform(err -> new BadRequestException()); // This is for custom exception handling
 	}
 
 	@GET
 	@Path("/{id}")
 	public Uni<RestResponse<JsonObject>> getSingle(Long id) {
-		return Fruit.findById(id)
+		return repo.findById(id)
 			.onItem().ifNull().failWith(NotFoundException::new)
-			.map(fruit -> RestResponse.ok(new JsonObject().put("data", fruit)));
+			.map(book -> RestResponse.ok(new JsonObject().put("data", book)));
 	}
 
 	@PUT
 	@Path("/{id}")
 	@WithTransaction
-	public Uni<RestResponse<JsonObject>> update(Long id, Fruit fruit) {
-		return Fruit.<Fruit>findById(id)
+	public Uni<RestResponse<JsonObject>> update(Long id, Book book) {
+		return repo.findById(id)
 			.onItem().ifNull().failWith(NotFoundException::new)
-			.flatMap(f -> {
-				if (fruit.name != null) f.name = fruit.name;
-				if (fruit.season != null) f.season = fruit.season;
-				if (fruit.color != null) f.color = fruit.color;
+			.flatMap(b -> {
+				if (book.getTitle() != null) b.setTitle(book.getTitle());
+				if (book.getPubDate() != null) b.setPubDate(book.getPubDate());
+				if (book.getAuthor() != null) b.setAuthor(book.getAuthor());
 
-				return f.persistAndFlush();
+				return repo.persistAndFlush(b);
 			})
-			.map(f -> RestResponse.accepted(new JsonObject().put("data", f)))
+			.map(b -> RestResponse.accepted(new JsonObject().put("data", b)))
 			.onFailure().transform(err -> new BadRequestException());
 	}
 }
