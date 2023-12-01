@@ -3,6 +3,9 @@ package org.examples.api.activerecord;
 import io.quarkus.hibernate.reactive.panache.PanacheEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import java.time.OffsetDateTime;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 @Entity
 public class Fruit extends PanacheEntity {
@@ -19,6 +22,14 @@ public class Fruit extends PanacheEntity {
 	private String color;
 
 	private String season;
+
+	@CreationTimestamp
+	@Column(name = "create_date")
+	private OffsetDateTime createDate;
+
+	@UpdateTimestamp
+	@Column(name = "update_date")
+	private OffsetDateTime updateDate;
 
 	public String getName() {
 		return name;
@@ -47,12 +58,22 @@ public class Fruit extends PanacheEntity {
 		return this;
 	}
 
+	public OffsetDateTime getCreateDate() {
+		return createDate;
+	}
+
+	public OffsetDateTime getUpdateDate() {
+		return updateDate;
+	}
+
 	@Override
 	public String toString() {
 		return "Fruit{" +
 			"name='" + name + '\'' +
 			", color='" + color + '\'' +
 			", season='" + season + '\'' +
+			", createDate=" + createDate +
+			", updateDate=" + updateDate +
 			'}';
 	}
 }

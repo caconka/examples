@@ -1,19 +1,27 @@
 package org.examples.api.activerecord;
 
+import io.quarkus.hibernate.reactive.panache.PanacheEntityBase;
 import io.quarkus.hibernate.reactive.panache.common.WithTransaction;
+import io.quarkus.panache.common.Page;
 import io.quarkus.panache.common.Sort;
+import io.quarkus.panache.common.Sort.Direction;
+import io.smallrye.mutiny.Multi;
 import io.smallrye.mutiny.Uni;
 import io.vertx.core.json.JsonObject;
 import jakarta.ws.rs.BadRequestException;
 import jakarta.ws.rs.Consumes;
+import jakarta.ws.rs.DefaultValue;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.NotFoundException;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.PUT;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.core.MediaType;
 import java.net.URI;
+import java.util.List;
+import org.examples.api.PaginatedResponse;
 import org.jboss.resteasy.reactive.RestResponse;
 
 @Path("/fruits")
@@ -22,8 +30,24 @@ import org.jboss.resteasy.reactive.RestResponse;
 public class FruitResource {
 
 	@GET
-	public Uni<RestResponse<JsonObject>> getAll() {
-		return Fruit.listAll(Sort.by("name")).map(fruits -> RestResponse.ok(new JsonObject().put("data", fruits)));
+	public Uni<RestResponse<PaginatedResponse>> list(
+		@QueryParam("page") @DefaultValue("1") int page,
+		@QueryParam("pageSize") @DefaultValue("3") int pageSize
+	) {
+		if (pageSize > 10) {
+			pageSize = 10;
+		}
+
+		var p = new Page(page - 1, pageSize);
+
+		return Fruit.findAll()
+			.page(p)
+			.pageCount()
+			.flatMap(totalPages ->
+				Fruit.findAll(Sort.by("name", Direction.Ascending))
+					.page(p)
+					.list()
+					.map(fruits -> RestResponse.ok(new PaginatedResponse(page, totalPages, fruits))));
 	}
 
 	@POST

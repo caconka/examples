@@ -5,6 +5,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import java.time.OffsetDateTime;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 @Entity
 public class Book {
@@ -26,6 +28,14 @@ public class Book {
 
 	@Column(name = "publication_date", nullable = false)
 	private OffsetDateTime pubDate;
+
+	@CreationTimestamp
+	@Column(name = "create_date")
+	private OffsetDateTime createDate;
+
+	@UpdateTimestamp
+	@Column(name = "update_date")
+	private OffsetDateTime updateDate;
 
 	public Long getId() {
 		return id;
@@ -58,13 +68,24 @@ public class Book {
 		return this;
 	}
 
+	public OffsetDateTime getCreateDate() {
+		return createDate;
+	}
+
+	public OffsetDateTime getUpdateDate() {
+		return updateDate;
+	}
+
 	@Override
 	public String toString() {
-		return "Fruit{" +
+		return "Book{" +
 			"id=" + id +
-			", name='" + title + '\'' +
-			", color='" + author + '\'' +
-			", pubDate='" + pubDate + '\'' +
+			", title='" + title + '\'' +
+			", author='" + author + '\'' +
+			", pubDate=" + pubDate +
+			", createDate=" + createDate +
+			", updateDate=" + updateDate +
 			'}';
 	}
+
 }
