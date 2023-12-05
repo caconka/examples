@@ -24,12 +24,12 @@ public class Fruit extends PanacheEntity {
 	private String season;
 
 	@CreationTimestamp
-	@Column(name = "create_date")
-	private OffsetDateTime createDate;
+	@Column(name = "created_at")
+	private OffsetDateTime createdAt;
 
 	@UpdateTimestamp
-	@Column(name = "update_date")
-	private OffsetDateTime updateDate;
+	@Column(name = "updated_at")
+	private OffsetDateTime updatedAt;
 
 	public String getName() {
 		return name;
@@ -58,12 +58,12 @@ public class Fruit extends PanacheEntity {
 		return this;
 	}
 
-	public OffsetDateTime getCreateDate() {
-		return createDate;
+	public OffsetDateTime getCreatedAt() {
+		return createdAt;
 	}
 
-	public OffsetDateTime getUpdateDate() {
-		return updateDate;
+	public OffsetDateTime getUpdatedAt() {
+		return updatedAt;
 	}
 
 	@Override
@@ -72,8 +72,8 @@ public class Fruit extends PanacheEntity {
 			"name='" + name + '\'' +
 			", color='" + color + '\'' +
 			", season='" + season + '\'' +
-			", createDate=" + createDate +
-			", updateDate=" + updateDate +
+			", createDate=" + createdAt +
+			", updateDate=" + updatedAt +
 			'}';
 	}
 }

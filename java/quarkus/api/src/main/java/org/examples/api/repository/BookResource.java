@@ -1,9 +1,6 @@
 package org.examples.api.repository;
 
 import io.quarkus.hibernate.reactive.panache.common.WithTransaction;
-import io.quarkus.panache.common.Page;
-import io.quarkus.panache.common.Sort;
-import io.quarkus.panache.common.Sort.Direction;
 import io.smallrye.mutiny.Uni;
 import io.vertx.core.json.JsonObject;
 import jakarta.inject.Inject;
@@ -37,34 +34,8 @@ public class BookResource {
 		@QueryParam("page") @DefaultValue("1") int page,
 		@QueryParam("pageSize") @DefaultValue("3") int pageSize
 	) {
-		if (pageSize > 10) {
-			pageSize = 10;
-		}
-
-		var p = new Page(page - 1, pageSize);
-
-		if (title != null) {
-			var likeTitle = "%" + title + "%";
-			var query = "title ILIKE ?1 order by title asc";
-
-			return repo.find(query, likeTitle)
-				.page(p)
-				.pageCount()
-				.flatMap(totalPages ->
-					repo.find(query, likeTitle)
-						.page(p)
-						.list()
-						.map(books -> RestResponse.ok(new PaginatedResponse<>(page, totalPages, books))));
-		}
-
-		return repo.find("")
-			.page(p)
-			.pageCount()
-			.flatMap(totalPages ->
-				repo.findAll(Sort.by("title", Direction.Ascending))
-					.page(p)
-					.list()
-					.map(books -> RestResponse.ok(new PaginatedResponse<>(page, totalPages, books))));
+		return repo.findPage(page, pageSize, title, genre)
+			.map(RestResponse::ok);
 	}
 
 	@POST
@@ -98,6 +69,9 @@ public class BookResource {
 				}
 				if (book.getAuthor() != null) {
 					b.setAuthor(book.getAuthor());
+				}
+				if (book.getGenres() != null) {
+					b.setGenres(book.getGenres());
 				}
 
 				return repo.persistAndFlush(b);
