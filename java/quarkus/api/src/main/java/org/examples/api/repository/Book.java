@@ -1,5 +1,6 @@
 package org.examples.api.repository;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -51,7 +52,7 @@ public class Book {
 	 *
 	 * Por otro lado, el parámetro `inverseJoinColumns` hace lo mismo, pero para el lado referenciador (Genre).
 	 */
-	@ManyToMany(fetch = FetchType.EAGER)
+	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@JoinTable(
 		name = "book_genre",
 		joinColumns = @JoinColumn(name = "book_id"),

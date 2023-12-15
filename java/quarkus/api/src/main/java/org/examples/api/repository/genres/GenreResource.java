@@ -2,6 +2,8 @@ package org.examples.api.repository.genres;
 
 import io.quarkus.hibernate.reactive.panache.common.WithTransaction;
 import io.quarkus.panache.common.Page;
+import io.quarkus.panache.common.Parameters;
+import io.quarkus.panache.common.Sort;
 import io.smallrye.mutiny.Uni;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.Consumes;
@@ -21,33 +23,33 @@ import org.jboss.resteasy.reactive.RestResponse;
 @Consumes(MediaType.APPLICATION_JSON)
 public class GenreResource {
 
+	private final GenreRepository repo;
+
 	@Inject
-	private GenreRepository repo;
+	public GenreResource(GenreRepository repo) {
+		this.repo = repo;
+	}
 
 	@GET
-	public Uni<RestResponse<PaginatedResponse<Genre>>> list(
+	public Uni<RestResponse<PaginatedResponse<GenreResponseDto>>> list(
 		@QueryParam("name") String name,
 		@QueryParam("page") @DefaultValue("1") int page,
 		@QueryParam("pageSize") @DefaultValue("3") int pageSize
 	) {
 		var p = new Page(page - 1, pageSize);
-		if (name != null) {
-			var query = "name ILIKE ?1";
+		var query = repo.findAll(Sort.descending("name")).page(p);
 
-			return repo.find(query, name) // Query param by index -> https://quarkus.io/guides/hibernate-orm-panache#query-parameters
-				.page(p)
-				.pageCount()
-				.flatMap(totalPages ->
-					repo.find(query, name)
-						.list()
-						.map(genres -> RestResponse.ok(new PaginatedResponse<>(page, page, genres))));
+		if (name != null) {
+			var params = Parameters.with("name", "%" + name + "%");
+			var filterNameLike = "name.like";
+
+			query.filter(filterNameLike, params);
 		}
 
-		return repo.findAll()
-			.page(p)
+		return query
 			.pageCount()
 			.flatMap(totalPages ->
-				repo.findAll()
+				query.project(GenreResponseDto.class) // Ejemplo de proyección, proyectamos `Genre` en `GenreResponseDto`
 					.list()
 					.map(genres -> RestResponse.ok(new PaginatedResponse<>(page, page, genres))));
 	}

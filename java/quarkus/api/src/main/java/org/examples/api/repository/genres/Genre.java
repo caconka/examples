@@ -2,22 +2,25 @@ package org.examples.api.repository.genres;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.SequenceGenerator;
 import java.time.OffsetDateTime;
-import java.util.HashSet;
-import java.util.Set;
-import org.examples.api.repository.Book;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.Filter;
+import org.hibernate.annotations.FilterDef;
+import org.hibernate.annotations.ParamDef;
 import org.hibernate.annotations.UpdateTimestamp;
 
+/*
+ * Ejemplo de filtros dinámicos con nombre -> https://www.baeldung.com/hibernate-dynamic-mapping#parameterized-filtering-with-filter
+ */
+
 @Entity
+@FilterDef(
+	name = "name.like", // Nombre descriptivo, ya que nos referiremos a él al utilizarlo
+	parameters = @ParamDef(name = "name", type = String.class)) // Nuestra condición require un parámetro, se debe definir
+@Filter(name = "name.like", condition = "LOWER(name) LIKE LOWER(:name)") // Condición escrita en HQL
 public class Genre {
 
 	@Id
@@ -43,6 +46,13 @@ public class Genre {
 	@UpdateTimestamp
 	@Column(name = "updated_at")
 	private OffsetDateTime updatedAt;
+
+	public Genre() {
+	}
+
+	public Genre(String name) {
+		this.name = name;
+	}
 
 	public Long getId() {
 		return id;

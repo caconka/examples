@@ -9,6 +9,10 @@ SELECT setval('fruit_seq', (SELECT MAX(id) FROM fruit));
 
 INSERT INTO book (id, title, author, publicated_at, created_at, updated_at) VALUES (1, 'The Hobbit', 'J.R.R. Tolkien', TIMESTAMP'1937-09-21', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
+SELECT setval('book_seq', (SELECT MAX(id) FROM book));
+
 INSERT INTO genre (id, name, created_at, updated_at) VALUES (1, 'Fantasy', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+
+SELECT setval('genre_seq', (SELECT MAX(id) FROM genre));
 
 INSERT INTO book_genre (book_id, genre_id) VALUES (1, 1);

@@ -1,16 +1,18 @@
 package org.examples.api.repository;
 
+import io.quarkus.hibernate.reactive.panache.PanacheQuery;
 import io.quarkus.hibernate.reactive.panache.PanacheRepository;
 import io.quarkus.panache.common.Page;
+import io.quarkus.panache.common.Parameters;
 import io.quarkus.panache.common.Sort;
 import io.quarkus.panache.common.Sort.Direction;
 import io.smallrye.mutiny.Uni;
 import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.persistence.NamedEntityGraph;
-import java.util.HashMap;
-import java.util.Map;
 import org.examples.api.PaginatedResponse;
 
+/*
+ * Context and dependency injection (CDI) -> https://quarkus.io/guides/cdi
+ */
 @ApplicationScoped
 public class BookRepository implements PanacheRepository<Book> {
 
@@ -19,52 +21,50 @@ public class BookRepository implements PanacheRepository<Book> {
 			pageSize = 10;
 		}
 
-		var p = new Page(page - 1, pageSize);
-		var query = createQuery(title, genre);
-		var queryParams = createQueryParamsMap(title, genre);
-
 		/*
 		 * Query parameters -> https://quarkus.io/guides/hibernate-orm-panache#query-parameters
 		 * We can create query params by index (1-based) (?1|?2|...) or by name (:title|:genre|...)
 		 */
 
-		return find(query, queryParams)
-			.page(p)
+		var p = new Page(page - 1, pageSize);
+		var params = createQueryParamsMap(title, genre);
+		var queryStr = createQueryStr(title, genre);
+		var query = find(queryStr, Sort.by("title", Direction.Ascending), params).page(p);
+
+		return query
 			.pageCount()
 			.flatMap(totalPages ->
-				find(query, Sort.by("title", Direction.Ascending), queryParams)
-					.page(p)
-					.list()
+				query.list()
 					.map(books -> new PaginatedResponse<>(page, totalPages, books)));
 	}
 
-	private Map<String, Object> createQueryParamsMap(String title, String genre) {
-		Map<String, Object> map = new HashMap<>();
+	private String createQueryStr(String title, String genre) {
+		var queryStr = "";
 
 		if (title != null) {
-			map.put("title", likeValue(title));
-		}
-
-		if (genre != null) {
-			map.put("genre", likeValue(genre));
-		}
-
-		return map;
-	}
-
-	private String createQuery(String title, String genre) {
-		var query = "";
-
-		if (title != null) {
-			query += "title ILIKE :title ";
+			queryStr += "title ILIKE :title ";
 		}
 
 		if (genre != null) {
 			var queryWithGenre = "genre ILIKE :genre";
-			query += !query.isBlank() ? " AND " + queryWithGenre : queryWithGenre;
+			queryStr += !queryStr.isBlank() ? " AND " + queryWithGenre : queryWithGenre;
 		}
 
-		return query;
+		return queryStr;
+	}
+
+	private Parameters createQueryParamsMap(String title, String genre) {
+		var params = new Parameters();
+
+		if (title != null) {
+			params.and("title", likeValue(title));
+		}
+
+		if (genre != null) {
+			params.and("genre", likeValue(genre));
+		}
+
+		return params;
 	}
 
 	private String likeValue(String value) {

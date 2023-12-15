@@ -1,11 +1,9 @@
 package org.examples.api.activerecord;
 
-import io.quarkus.hibernate.reactive.panache.PanacheEntityBase;
 import io.quarkus.hibernate.reactive.panache.common.WithTransaction;
 import io.quarkus.panache.common.Page;
 import io.quarkus.panache.common.Sort;
 import io.quarkus.panache.common.Sort.Direction;
-import io.smallrye.mutiny.Multi;
 import io.smallrye.mutiny.Uni;
 import io.vertx.core.json.JsonObject;
 import jakarta.ws.rs.BadRequestException;
@@ -20,7 +18,6 @@ import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.core.MediaType;
 import java.net.URI;
-import java.util.List;
 import org.examples.api.PaginatedResponse;
 import org.jboss.resteasy.reactive.RestResponse;
 

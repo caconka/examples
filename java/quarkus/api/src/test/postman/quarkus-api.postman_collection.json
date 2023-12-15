@@ -12,7 +12,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8080/fruits",
+					"raw": "http://localhost:8080/fruits?pageSize=2&page=1",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -20,6 +20,16 @@
 					"port": "8080",
 					"path": [
 						"fruits"
+					],
+					"query": [
+						{
+							"key": "pageSize",
+							"value": "2"
+						},
+						{
+							"key": "page",
+							"value": "1"
+						}
 					]
 				}
 			},
@@ -107,7 +117,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8080/books",
+					"raw": "http://localhost:8080/books?title=hobbit",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -115,6 +125,17 @@
 					"port": "8080",
 					"path": [
 						"books"
+					],
+					"query": [
+						{
+							"key": "title",
+							"value": "hobbit"
+						},
+						{
+							"key": "genre",
+							"value": "fantasy",
+							"disabled": true
+						}
 					]
 				}
 			},
@@ -147,7 +168,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"title\": \"Dune\",\n    \"author\": \"Frank Herbert\",\n    \"pubDate\": \"1965-06-01T00:00:00Z\"\n}",
+					"raw": "{\n    \"title\": \"Dune\",\n    \"author\": \"Frank Herbert\",\n    \"publication_date\": \"1965-06-01T00:00:00Z\",\n    \"genres\": [\n        {\n            \"name\": \"Science fiction\"\n        }\n    ]\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -192,6 +213,66 @@
 					"path": [
 						"books",
 						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "List genres",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/books/genres?name=fantasy",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"books",
+						"genres"
+					],
+					"query": [
+						{
+							"key": "genre",
+							"value": "fantasy",
+							"disabled": true
+						},
+						{
+							"key": "name",
+							"value": "fantasy"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Genre",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"Philosophy\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/books/genres",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"books",
+						"genres"
 					]
 				}
 			},
